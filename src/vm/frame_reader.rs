@@ -7,7 +7,7 @@ use crate::structures::{value::Value, frame::Frame, opcode::OpCode, stack::Stack
 //will be adding more to a real vm later
 pub fn read_frame(frame : Frame) -> Result<Stack<Rc<Value>>, ()> {
     let mut instr_ptr = 0usize;
-    let mut values: Stack<Rc<Value>> = Stack::new();
+    let mut values: Stack<Rc<Value>> = Stack::default();
     while let Some(i) = frame.bytecode.get(instr_ptr) {
         let instruction = OpCode::try_from(*i).unwrap();
         match instruction {

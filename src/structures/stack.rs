@@ -1,13 +1,18 @@
 
 #[derive(Debug, Default)]
 pub struct Stack<T> {
-    my_stack : Vec<T>
+    my_stack : Vec<T>,
+    max : isize
 }
 
 impl <T> Stack<T> {
+    
+   pub fn new(max : isize ) -> Stack<T> {
+       Stack { my_stack : Vec::new(), max } 
+   }
 
-   pub fn new() -> Stack<T> {
-       Stack { my_stack: Vec::new() }
+   pub fn default() -> Stack<T> {
+       Stack { my_stack: Vec::new(), max : 256 }
    }
    pub fn get(&self, idx : usize) -> Option<&T> {
         self.my_stack.get(idx)

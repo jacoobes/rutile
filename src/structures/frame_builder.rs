@@ -14,10 +14,11 @@ pub struct FrameBuilder {
 impl FrameBuilder {
     
     pub fn new (name : String) -> FrameBuilder {
-        FrameBuilder { name, bytecode: Stack::new(), constants: Vec::new() }
+        FrameBuilder { name, bytecode: Stack::default(), constants: Vec::new() }
     }
     
-    pub fn push_const(mut self, value: Rc<Value>, idx : u8) -> FrameBuilder {
+    pub fn push_const(mut self, value: Rc<Value>) -> FrameBuilder {
+        let idx = self.constants.len() as u8;
         self.constants.push(value);
         self.bytecode.push(OpCode::LoadConst.into());
         self.bytecode.push(idx);

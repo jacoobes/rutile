@@ -29,18 +29,32 @@ pub fn read_frame(frame : Frame) -> Result<Stack<Rc<Value>>, ()> {
                 }) { values.push(val) }
             },
             OpCode::Add =>  {
-                
+                let rhs = values.pop().expect("Tried popping stack rhs +; nothing found!");
+                let lhs = values.pop().expect("Tried popping stack lhs +; nothing found!");
+                values.push(Rc::new(Value::combine(&lhs, &rhs, "+")));
+            }
+            OpCode::Sub => {
+                let rhs = values.pop().expect("Tried popping stack rhs -; nothing found!");
+                let lhs = values.pop().expect("Tried popping stack lhs -; nothing found!");
+                values.push(Rc::new(Value::combine(&lhs, &rhs, "-")));
             },
-            OpCode::Sub => (),
-            OpCode::Mul => (),
-            OpCode::Div => (),
+            OpCode::Mul => {
+                let rhs = values.pop().expect("Tried popping stack rhs *; nothing found!");
+                let lhs = values.pop().expect("Tried popping stack lhs *; nothing found!");
+                values.push(Rc::new(Value::combine(&lhs, &rhs, "*")));
+            },
+            OpCode::Div => {
+                let rhs = values.pop().expect("Tried popping stack rhs /; nothing found!");
+                let lhs = values.pop().expect("Tried popping stack lhs /; nothing found!");
+                values.push(Rc::new(Value::combine(&lhs, &rhs, "/")));
+            },
+            OpCode::Mod => {
+                let rhs = values.pop().expect("Tried popping stack rhs %; nothing found!");
+                let lhs = values.pop().expect("Tried popping stack lhs %; nothing found!");
+                values.push(Rc::new(Value::combine(&lhs, &rhs, "%")));
+            }
         }
         instr_ptr += 1;
     }
     Err(())
-
 }
-
-
-
-

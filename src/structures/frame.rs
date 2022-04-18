@@ -12,7 +12,7 @@ pub struct Frame {
 impl Frame {
 
     pub fn builder (name : String) -> FrameBuilder {
-        FrameBuilder::default(name)
+        FrameBuilder::new(name)
     }
 
     pub fn top(&self) -> Option<&u8> {

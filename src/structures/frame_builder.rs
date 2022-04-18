@@ -4,7 +4,7 @@ use crate::structures::value::Value;
 use crate::OpCode;
 use std::rc::Rc;
 use super::stack::Stack;
-#[derive(Default)]
+
 pub struct FrameBuilder {
     name : String,
     bytecode : Stack<u8>,
@@ -13,7 +13,7 @@ pub struct FrameBuilder {
 
 impl FrameBuilder {
     
-    pub fn default (name : String) -> FrameBuilder {
+    pub fn new (name : String) -> FrameBuilder {
         FrameBuilder { name, bytecode: Stack::new(), constants: Vec::new() }
     }
     

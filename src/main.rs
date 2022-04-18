@@ -1,13 +1,13 @@
 pub mod structures;
 pub mod vm;
 
-use smol_str::SmolStr;
 use structures::{ frame::*, opcode::*, value::Value::* };
 use std::rc::Rc;
 fn main() {
     let frame = Frame::builder(String::from("fn1")) 
-        .push_const(Rc::new(Integer(10)), 0)
-        .push_opcode(OpCode::Negate)
+        .push_const(Rc::new(Number(1000f64)), 0)
+        .push_const(Rc::new(Number(1000f64)), 1)
+        .push_opcode(OpCode::Mod)
         .push_opcode(OpCode::Halt)
         .build();
 

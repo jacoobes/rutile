@@ -9,5 +9,6 @@ pub enum OpCode {
     Add         = 0x000003,
     Sub         = 0x000004,
     Mul         = 0x000005,
-    Div         = 0x000006
+    Div         = 0x000006,
+    Mod         = 0x000007
 }

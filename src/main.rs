@@ -5,9 +5,9 @@ use structures::{ frame::*, opcode::*, value::Value::* };
 use std::rc::Rc;
 fn main() {
     let frame = Frame::builder(String::from("fn1")) 
-        .push_const(Rc::new(Number(100f64)))
-        .push_const(Rc::new(Number(2f64)))
-        .push_opcode(OpCode::Sub)
+        .push_const(Rc::new(Str("hello".into())))
+        .push_const(Rc::new(Str("hello".into())))
+        .push_opcode(OpCode::IfStEq)
         .push_opcode(OpCode::Halt)
         .build();
 

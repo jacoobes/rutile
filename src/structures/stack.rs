@@ -2,12 +2,12 @@
 #[derive(Debug, Default)]
 pub struct Stack<T> {
     my_stack : Vec<T>,
-    max : isize
+    max : usize
 }
 
 impl <T> Stack<T> {
     
-   pub fn new(max : isize ) -> Stack<T> {
+   pub fn new(max : usize ) -> Stack<T> {
        Stack { my_stack : Vec::new(), max } 
    }
 
@@ -24,6 +24,9 @@ impl <T> Stack<T> {
        self.my_stack.is_empty()
     }
    pub fn push(&mut self, val : T) {
+       if self.my_stack.len() == self.max {
+           panic!("Stack overflow: reached {}",self.max)
+       }
        self.my_stack.push(val)
    }
    pub fn top(&self) -> Option<&T> {

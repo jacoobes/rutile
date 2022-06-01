@@ -1,7 +1,7 @@
 
-use crate::Frame;
+use super::frame::Frame;
 use crate::structures::value::Value;
-use crate::OpCode;
+use super::opcode::OpCode;
 use std::rc::Rc;
 use super::stack::Stack;
 

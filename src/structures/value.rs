@@ -35,7 +35,7 @@ impl Value {
             ("/", Value::Number(f), Value::Number(f2)) => Value::Number(f / f2),
             ("*", Value::Number(f), Value::Number(f2)) => Value::Number(f * f2),
             ("%", Value::Number(f), Value::Number(f2)) => Value::Number(f % f2),
-            (sign, _, _) => panic!("Cannot combine these two types : {:?}, {:?} with {sign}", lhs, rhs)
+            (_sign, _, _) => panic!("Cannot combine these two types : {:?}, {:?} with {sign}", lhs, rhs)
         }
     }
     pub fn equals(lhs: &Value, rhs: &Value, code : &OpCode) -> Value {

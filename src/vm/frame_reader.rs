@@ -5,7 +5,7 @@ use crate::structures::{value::Value, frame::Frame, opcode::OpCode, stack::Stack
 
 //ATM this will just return a vec of values given instructions
 //will be adding more to a real vm later
-pub fn read_frame(frame : Frame) -> Result<Stack<Rc<Value>>, String> {
+pub fn read_frame(mut frame: Frame) -> Result<Stack<Rc<Value>>, String> {
     let mut instr_ptr = 0usize;
     let mut values: Stack<Rc<Value>> = Stack::default();
     while let Some(i) = frame.bytecode.get(instr_ptr) {
@@ -63,6 +63,8 @@ pub fn read_frame(frame : Frame) -> Result<Stack<Rc<Value>>, String> {
             OpCode::IfNuLs | OpCode::IfNuGr => {
                 let [rhs, lhs] = pop_two(&mut values, "Tried popping stack < >; nothing found!");
                 values.push(Rc::new(Value::cmp(&lhs, &rhs, &instruction)))
+            }
+            OpCode::DefineLocal => {
             }
         }
         instr_ptr += 1;

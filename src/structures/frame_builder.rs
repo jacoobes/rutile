@@ -1,19 +1,20 @@
-
+use std::collections::HashMap;
 use super::frame::Frame;
 use crate::structures::value::Value;
 use super::opcode::OpCode;
 use std::rc::Rc;
+use smol_str::SmolStr;
 use super::stack::Stack;
 
 pub struct FrameBuilder {
-    name : String,
+    name : SmolStr,
     bytecode : Stack<u8>,
-    constants : Vec<Rc<Value>>
+    constants : Vec<Rc<Value>>,
 }
 
 impl FrameBuilder {
     
-    pub fn new (name : String) -> FrameBuilder {
+    pub fn new (name : SmolStr) -> FrameBuilder {
         FrameBuilder { name, bytecode: Stack::default(), constants: Vec::new() }
     }
     
@@ -28,6 +29,11 @@ impl FrameBuilder {
         self.bytecode.push(value.into());
         self
     }
+
+    pub fn def_local(mut self) {
+
+    }
+
     pub fn build(self) -> Frame {
         Frame { 
             name : self.name,

@@ -17,4 +17,5 @@ pub enum OpCode {
     IfStEq      = 0x00000b, // IfStringEquals
     IfBoEq      = 0x00000c, // IfBoEq
     Not         = 0x00000d, // BooleanNot
+    DefineLocal = 0x00000e, // Define Local variable
 }

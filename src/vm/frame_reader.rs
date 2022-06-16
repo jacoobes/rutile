@@ -1,11 +1,13 @@
+use core::panicking::panic;
 use std::rc::Rc;
 
 use crate::structures::{value::Value, frame::Frame, opcode::OpCode, stack::Stack};
+use crate::structures::value::Value::Boolean;
 
 
 //ATM this will just return a vec of values given instructions
 //will be adding more to a real vm later
-pub fn read_frame(mut frame: Frame) -> Result<Stack<Rc<Value>>, String> {
+pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
     let mut instr_ptr = 0usize;
     let mut values: Stack<Rc<Value>> = Stack::default();
     while let Some(i) = frame.bytecode.get(instr_ptr) {
@@ -17,7 +19,7 @@ pub fn read_frame(mut frame: Frame) -> Result<Stack<Rc<Value>>, String> {
                      .and_then(|data_idx| frame.constants.get(*data_idx as usize));
                 instr_ptr += 1;
                 match const_data {
-                    Some( val ) => values.push(val.clone()),
+                    Some( val ) => values.push(Rc::clone(val)),
                     None => panic!("Expected a constant in pool near {i}")
                 }
             }
@@ -56,15 +58,37 @@ pub fn read_frame(mut frame: Frame) -> Result<Stack<Rc<Value>>, String> {
                 let [rhs,lhs] = pop_two(&mut values, "Tried popping stack %; nothing found!");
                 values.push(Rc::new(Value::combine(&lhs, &rhs, "%")))
             },
-            OpCode::IfNuEq | OpCode::IfStEq | OpCode::IfBoEq => {
+            OpCode::IfEqual => {
                 let [rhs, lhs] = pop_two(&mut values, "Tried popping stack ==; nothing found!");
-                values.push(Rc::new(Value::equals(&lhs, &rhs, &instruction)))
+                values.push(Rc::new(Value::equals(&lhs, &rhs)))
             },
-            OpCode::IfNuLs | OpCode::IfNuGr => {
+            OpCode::IfLess | OpCode::IfGreater => {
                 let [rhs, lhs] = pop_two(&mut values, "Tried popping stack < >; nothing found!");
                 values.push(Rc::new(Value::cmp(&lhs, &rhs, &instruction)))
             }
-            OpCode::DefineLocal => {
+            OpCode::And => {
+                let [rhs, lhs] = pop_two(&mut values, "Tried popping stack for `and`; nothing found!");
+                if let (Boolean(boobs), Boolean(tits)) = (&lhs, &rhs) {
+                    if !boobs || !tits {
+                        values.push(lhs)
+                    } else {
+                        values.push(Rc::new(Boolean(true)))
+                    }
+                } else {
+                    panic!("Cannot use `and` operator with {lhs:?}, {rhs:?}")
+                }
+            }
+            OpCode::Or => {
+                let [rhs, lhs] = pop_two(&mut values, "Tried popping stack for `or`; nothing found!");
+                if let (Boolean(boobs), Boolean(tits)) = (&lhs, &rhs) {
+                    if boobs || tits {
+                        values.push(lhs)
+                    } else {
+                        values.push(Rc::new(Boolean(false)))
+                    }
+                } else {
+                    panic!("Cannot use `or` operator with {lhs:?}, {rhs:?}")
+                }
             }
         }
         instr_ptr += 1;

@@ -11,11 +11,10 @@ pub enum OpCode {
     Mul         = 0x000005, // multiply two numbers
     Div         = 0x000006, // divide two numbers
     Mod         = 0x000007, // modulus two numbers
-    IfNuLs      = 0x000008, // IfNumberLessThan
-    IfNuGr      = 0x000009, // IfNumberGreaterThan
-    IfNuEq      = 0x00000a, // IfNumberEq
-    IfStEq      = 0x00000b, // IfStringEquals
-    IfBoEq      = 0x00000c, // IfBoEq
-    Not         = 0x00000d, // BooleanNot
-    DefineLocal = 0x00000e, // Define Local variable
+    IfLess      = 0x000008, // IfLessThan
+    IfGreater   = 0x000009, // IfGreaterThan
+    IfEqual     = 0x00000a, // IfEqual
+    Not         = 0x00000b, // IfStringEquals
+    And         = 0x00000c, // IfBoEq
+    Or          = 0x00000d, // Or boolean operator
 }

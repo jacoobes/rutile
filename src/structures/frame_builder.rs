@@ -18,19 +18,19 @@ impl FrameBuilder {
         FrameBuilder { name, bytecode: Stack::default(), constants: Vec::new() }
     }
     
-    pub fn push_const(mut self, value: Rc<Value>) -> FrameBuilder {
+    pub fn with_const(&mut self, value: Rc<Value>) -> &mut FrameBuilder {
         let idx = self.constants.len() as u8;
         self.constants.push(value);
         self.bytecode.push(OpCode::LoadConst.into());
         self.bytecode.push(idx);
         self
     }
-    pub fn push_opcode(mut self, value: OpCode) -> FrameBuilder {
+    pub fn with_opcode(&mut self, value: OpCode) -> &mut FrameBuilder {
         self.bytecode.push(value.into());
         self
     }
 
-    pub fn def_local(mut self) {
+    pub fn def_local(&mut self) {
 
     }
 

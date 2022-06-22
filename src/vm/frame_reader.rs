@@ -1,4 +1,3 @@
-use core::panicking::panic;
 use std::rc::Rc;
 
 use crate::structures::{value::Value, frame::Frame, opcode::OpCode, stack::Stack};
@@ -68,7 +67,7 @@ pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
             }
             OpCode::And => {
                 let [rhs, lhs] = pop_two(&mut values, "Tried popping stack for `and`; nothing found!");
-                if let (Boolean(boobs), Boolean(tits)) = (&lhs, &rhs) {
+                if let ( Boolean(boobs), Boolean(tits)) = (&*lhs, &*rhs) {
                     if !boobs || !tits {
                         values.push(lhs)
                     } else {
@@ -80,8 +79,8 @@ pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
             }
             OpCode::Or => {
                 let [rhs, lhs] = pop_two(&mut values, "Tried popping stack for `or`; nothing found!");
-                if let (Boolean(boobs), Boolean(tits)) = (&lhs, &rhs) {
-                    if boobs || tits {
+                if let (Boolean(boobs), Boolean(tits)) = (&*lhs, &*rhs) {
+                    if *boobs || *tits {
                         values.push(lhs)
                     } else {
                         values.push(Rc::new(Boolean(false)))

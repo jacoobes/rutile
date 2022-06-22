@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use super::frame::Frame;
 use crate::structures::value::Value;
 use super::opcode::OpCode;

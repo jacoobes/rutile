@@ -1,3 +1,4 @@
+use std::ops::Index;
 
 #[derive(Debug, Default)]
 pub struct Stack<T> {
@@ -32,6 +33,16 @@ impl <T> Stack<T> {
    pub fn top(&self) -> Option<&T> {
        self.my_stack.last()
    }
-   
+   pub fn len(&self) -> usize {
+       self.my_stack.len()
+   }
 
+}
+
+impl <T> Index<usize> for Stack<T> {
+    type Output = T;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.my_stack[index]
+    }
 }

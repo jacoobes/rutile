@@ -4,3 +4,6 @@ pub mod frame;
 pub mod value;
 pub mod frame_builder;
 pub mod disassembler;
+pub mod locals;
+pub mod tokens;
+pub mod peekable_parser;

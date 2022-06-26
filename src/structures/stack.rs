@@ -37,6 +37,10 @@ impl <T> Stack<T> {
        self.my_stack.len()
    }
 
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
 }
 
 impl <T> Index<usize> for Stack<T> {

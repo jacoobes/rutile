@@ -24,6 +24,7 @@ impl Disassembler {
                     | OpCode::Mul
                     | OpCode::Negate
                     | OpCode::Add
+                    | OpCode::DefLocal
                     | OpCode::Sub
                     | OpCode::Div
                     | OpCode::Mod

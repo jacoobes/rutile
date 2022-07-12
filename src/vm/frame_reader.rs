@@ -89,6 +89,9 @@ pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
                     panic!("Cannot use `or` operator with {lhs:?}, {rhs:?}")
                 }
             }
+            OpCode::DefLocal => {
+                println!("{:?}", frame.local_chart)
+            }
         }
         instr_ptr += 1;
     }

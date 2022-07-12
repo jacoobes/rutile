@@ -8,8 +8,10 @@ pub enum Value {
     Str(SmolStr),
     Number(f64),
     Boolean(bool),
-    Char(char)
+    Char(char),
+    Ident(SmolStr)
 }
+
 
 
 impl Value {

@@ -3,20 +3,23 @@ use crate::structures::value::Value;
 use super::opcode::OpCode;
 use std::rc::Rc;
 use smol_str::SmolStr;
+use crate::structures::locals::LocalChart;
+use crate::structures::tokens::Token;
 use super::stack::Stack;
 
 pub struct FrameBuilder {
     name : SmolStr,
     bytecode : Stack<u8>,
     constants : Vec<Rc<Value>>,
+    local_chart : LocalChart
 }
 
 impl FrameBuilder {
-    
+
     pub fn new (name : SmolStr) -> FrameBuilder {
-        FrameBuilder { name, bytecode: Stack::default(), constants: Vec::new() }
+        FrameBuilder { name, bytecode: Stack::default(), constants: Vec::new(), local_chart: Default::default() }
     }
-    
+
     pub fn with_const(&mut self, value: Rc<Value>) -> &mut FrameBuilder {
         let idx = self.constants.len() as u8;
         self.constants.push(value);
@@ -29,17 +32,26 @@ impl FrameBuilder {
         self
     }
 
-    pub fn def_local(&mut self) {
+    pub fn with_local(&mut self, token : Token) -> &mut FrameBuilder {
+        self.with_opcode(OpCode::DefLocal);
+        self.local_chart.new_local(token);
+        self
+    }
 
+    pub fn new_scope(&mut self) {
+        self.local_chart.inc_depth()
+    }
+
+    pub fn leave_scope(&mut self) {
+        self.local_chart.dec_depth()
     }
 
     pub fn build(self) -> Frame {
-        Frame { 
+        Frame {
             name : self.name,
             bytecode: self.bytecode,
-            constants: self.constants 
+            constants: self.constants,
+            local_chart: self.local_chart
         }
     }
 }
-
-

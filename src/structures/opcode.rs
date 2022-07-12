@@ -17,4 +17,5 @@ pub enum OpCode {
     Not         = 0x00000b, // IfStringEquals
     And         = 0x00000c, // IfBoEq
     Or          = 0x00000d, // Or boolean operator
+    DefLocal    = 0x00000e, // Define a local variable in scope
 }

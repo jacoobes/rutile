@@ -21,7 +21,7 @@ impl Disassembler {
         OpCode::try_from(*instruction).map(| op | match op {
                     OpCode::Halt => Disassembler::simple_instruction(offset, op),
                     OpCode::LoadConst => Disassembler::const_instruction(frame, offset, op),
-                    | OpCode::Mul
+                    OpCode::Mul
                     | OpCode::Negate
                     | OpCode::Add
                     | OpCode::DefLocal
@@ -34,6 +34,7 @@ impl Disassembler {
                     | OpCode::Not
                     | OpCode::And
                     | OpCode::Or => Disassembler::simple_instruction(offset, op),
+                    OpCode::PopN => Disassembler::pop_instruction(frame, offset, op)
       }).unwrap()
     }
     fn simple_instruction(offset: &mut usize, instruction: OpCode) -> usize {
@@ -56,6 +57,14 @@ impl Disassembler {
         println!(" {:?}", chunk.constants[loc_of_const]);
         *offset + 2
     }
-
+    fn pop_instruction(chunk: &Frame, offset: &mut usize, instruction: OpCode) -> usize {
+        let pop_n = chunk.bytecode[*offset + 1] as usize;
+        println!(
+            "{:<20}{:#04x}",
+            format!("{:?} - {pop_n:?}", &instruction),
+            <OpCode as Into<u8>>::into(instruction),
+        );
+        *offset + 2
+    }
 }
 

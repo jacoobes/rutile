@@ -92,6 +92,11 @@ pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
             OpCode::DefLocal => {
                 println!("{:?}", frame.local_chart)
             }
+            OpCode::PopN => {
+                let how_many = frame.bytecode.get(instr_ptr).expect("Expected an amount to pop, found none");
+                instr_ptr += 1;
+                println!("{:?}", how_many);
+            }
         }
         instr_ptr += 1;
     }

@@ -5,6 +5,7 @@ use std::rc::Rc;
 use smol_str::SmolStr;
 use crate::structures::locals::LocalChart;
 use crate::structures::tokens::Token;
+use crate::structures::value::Value::Number;
 use super::stack::Stack;
 
 pub struct FrameBuilder {
@@ -43,7 +44,11 @@ impl FrameBuilder {
     }
 
     pub fn leave_scope(&mut self) {
-        self.local_chart.dec_depth()
+        let amt_dropped = self.local_chart.dec_depth();
+        let idx = self.constants.len() as u8;
+        self.bytecode.push(amt_dropped as u8);
+        self.with_opcode(OpCode::PopN);
+        self.bytecode.push(idx);
     }
 
     pub fn build(self) -> Frame {

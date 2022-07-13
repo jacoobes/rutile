@@ -6,6 +6,11 @@ pub struct Local {
     depth : usize
 }
 
+impl Local {
+    pub fn less_than_self_depth(&self, dep : usize) -> bool {
+        self.depth < dep
+    }
+}
 
 #[derive(Debug)]
 pub struct LocalChart {
@@ -24,8 +29,12 @@ impl LocalChart {
         self.scope_depth += 1;
     }
 
-    pub fn dec_depth(&mut self) {
+    pub fn dec_depth(&mut self) -> usize {
         self.scope_depth -= 1;
+        let prev_len = self.locals.len();
+        self.locals.retain(| el | el.less_than_self_depth(self.scope_depth + 1) );
+        let now_len = self.locals.len();
+        prev_len - now_len
     }
 
     pub fn new_local(&mut self, name : Token ) {
@@ -34,9 +43,9 @@ impl LocalChart {
        }
        let new_local = Local { name, depth: self.scope_depth };
 
-        if self.locals.iter().any( |t | t == &new_local  ) {
+       if self.locals.iter().any( |t | t == &new_local  ) {
             panic!("Already have another variable in the same scope!")
-        }
+       }
 
        self.locals.push(new_local);
        self.local_count += 1;

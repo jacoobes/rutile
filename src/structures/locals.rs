@@ -58,7 +58,10 @@ impl LocalChart {
     pub fn cur_scope_depth(&self) -> &usize {
         &self.scope_depth
     }
-    
+
+    pub fn get(&self, idx : u8) -> Option<&Local> {
+        self.locals.get(idx as usize)
+    }
 
 }
 

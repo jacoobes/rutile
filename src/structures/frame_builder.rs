@@ -5,7 +5,6 @@ use std::rc::Rc;
 use smol_str::SmolStr;
 use crate::structures::locals::LocalChart;
 use crate::structures::tokens::Token;
-use crate::structures::value::Value::Number;
 use super::stack::Stack;
 
 pub struct FrameBuilder {
@@ -25,18 +24,22 @@ impl FrameBuilder {
         let idx = self.constants.len() as u8;
         self.constants.push(value);
         self.bytecode.push(OpCode::LoadConst.into());
-        self.bytecode.push(idx);
+        self.with_byte(idx);
         self
     }
     pub fn with_opcode(&mut self, value: OpCode) -> &mut FrameBuilder {
         self.bytecode.push(value.into());
         self
     }
-
-    pub fn with_local(&mut self, token : Token) -> &mut FrameBuilder {
-        self.with_opcode(OpCode::DefLocal);
-        self.local_chart.new_local(token);
+    pub fn with_byte(&mut self, value : u8) -> &mut FrameBuilder {
+        self.bytecode.push(value);
         self
+    }
+    pub fn with_def_local(&mut self, token : Token) -> u8 {
+        let idx = self.local_chart.locals().len() as u8;
+        self.local_chart.new_local(token);
+        self.with_opcode(OpCode::DefLocal);
+        idx
     }
 
     pub fn new_scope(&mut self) {
@@ -46,9 +49,9 @@ impl FrameBuilder {
     pub fn leave_scope(&mut self) {
         let amt_dropped = self.local_chart.dec_depth();
         let idx = self.constants.len() as u8;
-        self.bytecode.push(amt_dropped as u8);
+        self.with_byte(amt_dropped as u8);
         self.with_opcode(OpCode::PopN);
-        self.bytecode.push(idx);
+        self.with_byte(idx);
     }
 
     pub fn build(self) -> Frame {

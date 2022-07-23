@@ -24,7 +24,6 @@ impl Disassembler {
                     OpCode::Mul
                     | OpCode::Negate
                     | OpCode::Add
-                    | OpCode::DefLocal
                     | OpCode::Sub
                     | OpCode::Div
                     | OpCode::Mod
@@ -33,8 +32,10 @@ impl Disassembler {
                     | OpCode::IfEqual
                     | OpCode::Not
                     | OpCode::And
-                    | OpCode::Or => Disassembler::simple_instruction(offset, op),
-                    OpCode::PopN => Disassembler::pop_instruction(frame, offset, op)
+                    | OpCode::Or
+                    | OpCode::Pop => Disassembler::simple_instruction(offset, op),
+                    OpCode::PopN
+                    | OpCode::DefLocal => Disassembler::pop_instruction(frame, offset, op)
       }).unwrap()
     }
     fn simple_instruction(offset: &mut usize, instruction: OpCode) -> usize {

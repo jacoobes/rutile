@@ -90,12 +90,21 @@ pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
                 }
             }
             OpCode::DefLocal => {
-                println!("{:?}", frame.local_chart)
+                instr_ptr += 1;
+                let local_location = frame.bytecode.get(instr_ptr).expect("Expected an amount to pop, found none");
+                let p = values.get(*local_location as usize);
+                println!("{:?}", frame.local_chart.get(*local_location));
+                println!("{:?}", p);
             }
             OpCode::PopN => {
-                let how_many = frame.bytecode.get(instr_ptr).expect("Expected an amount to pop, found none");
                 instr_ptr += 1;
-                println!("{:?}", how_many);
+                let how_many = frame.bytecode.get(instr_ptr).expect("Expected an amount to pop, found none");
+                for _ in 1 .. *how_many {
+                    values.pop();
+                }
+            }
+            OpCode::Pop => {
+                values.pop();
             }
         }
         instr_ptr += 1;

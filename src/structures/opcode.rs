@@ -19,4 +19,5 @@ pub enum OpCode {
     Or          = 0x00000d, // Or boolean operator
     DefLocal    = 0x00000e, // Define a local variable in scope
     PopN        = 0x00000f, // Pop N off the value stack
+    Pop         = 0x000010,
 }

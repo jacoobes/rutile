@@ -91,10 +91,17 @@ pub fn read_frame(frame: Frame) -> Result<Stack<Rc<Value>>, String> {
             }
             OpCode::DefLocal => {
                 instr_ptr += 1;
-                let local_location = frame.bytecode.get(instr_ptr).expect("Expected an amount to pop, found none");
-                let p = values.get(*local_location as usize);
-                println!("{:?}", frame.local_chart.get(*local_location));
-                println!("{:?}", p);
+                let local_location = frame.bytecode.get(instr_ptr).expect("Could not access index of DefLocal");
+                let p = values.get(*local_location as usize).expect("Expected a value to pop, found none");
+            }
+            OpCode::GetLocal => {
+                instr_ptr += 1;
+                let local_location = frame.bytecode
+                    .get(instr_ptr as usize)
+                    .expect("Could not find location of local variable");
+                let accessed_loc = frame.local_chart.get(*local_location);
+                let value = values.get(*local_location as usize);
+                println!("{:?} {:?}", accessed_loc, value);
             }
             OpCode::PopN => {
                 instr_ptr += 1;
@@ -116,3 +123,6 @@ fn pop_two(vec: &mut Stack<Rc<Value>>, msg: &'static str) -> [Rc<Value>;2] {
     [vec.pop().expect(msg), vec.pop().expect(msg)]
 }
 
+fn find_local() {
+
+}

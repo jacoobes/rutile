@@ -1,3 +1,4 @@
+use smol_str::SmolStr;
 use super::tokens::Token;
 
 #[derive(Debug, PartialEq)]
@@ -43,12 +44,19 @@ impl LocalChart {
        }
        let new_local = Local { name, depth: self.scope_depth };
 
-       if self.locals.iter().any( |t | t == &new_local  ) {
+       if self.locals_match(&new_local) {
             panic!("Already have another variable in the same scope!")
        }
 
        self.locals.push(new_local);
        self.local_count += 1;
+    }
+    pub fn locals_match(&self, new_local : &Local) -> bool {
+        self.locals.iter().any( |t | t == new_local)
+    }
+
+    pub fn resolve_local(&self, name : &Token) -> Option<usize> {
+        self.locals.iter().position(| s | &s.name == name && s.depth == *self.cur_scope_depth())
     }
 
     pub fn locals(&self) -> &Vec<Local> {

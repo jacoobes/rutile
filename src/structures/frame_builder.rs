@@ -41,11 +41,13 @@ impl FrameBuilder {
         self.with_opcode(OpCode::DefLocal);
         idx
     }
-
     pub fn new_scope(&mut self) {
         self.local_chart.inc_depth()
     }
 
+    pub fn resolve_local(&mut self, name : &Token) -> u8 {
+        self.local_chart.resolve_local(name).expect("Expected to find some local, found none") as u8
+    }
     pub fn leave_scope(&mut self) {
         let amt_dropped = self.local_chart.dec_depth();
         let idx = self.constants.len() as u8;

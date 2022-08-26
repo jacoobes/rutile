@@ -33,8 +33,10 @@ impl Disassembler {
                     | OpCode::Not
                     | OpCode::And
                     | OpCode::Or
-                    | OpCode::Pop => Disassembler::simple_instruction(offset, op),
+                    | OpCode::Pop
+                      => Disassembler::simple_instruction(offset, op),
                     OpCode::PopN
+                    | OpCode::GetLocal
                     | OpCode::DefLocal => Disassembler::pop_instruction(frame, offset, op)
       }).unwrap()
     }

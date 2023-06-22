@@ -1,5 +1,9 @@
+extern crate core;
+
 pub mod structures;
 pub mod vm;
 
 
-fn main() {}
+pub fn main() {
+
+}

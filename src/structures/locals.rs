@@ -1,15 +1,13 @@
 use smol_str::SmolStr;
-use super::tokens::Token;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub struct Local {
-    name : Token,
-    depth : usize
+    name: SmolStr,
+    depth: usize
 }
-
 impl Local {
     pub fn less_than_self_depth(&self, dep : usize) -> bool {
-        self.depth < dep
+        self.depth <= dep
     }
 }
 
@@ -38,7 +36,7 @@ impl LocalChart {
         prev_len - now_len
     }
 
-    pub fn new_local(&mut self, name : Token ) {
+    pub fn new_local(&mut self, name: SmolStr) {
        if self.local_count == 256 {
             panic!("Variable overflow. Reached maximum variables per scope (256)")
        }
@@ -52,15 +50,12 @@ impl LocalChart {
        self.local_count += 1;
     }
     pub fn locals_match(&self, new_local : &Local) -> bool {
-        self.locals.iter().any( |t | t == new_local)
+        false
+        //self.locals.iter().any( |t | t == new_local)
     }
 
-    pub fn resolve_local(&self, name : &Token) -> Option<usize> {
-        self.locals.iter().position(| s | &s.name == name && s.depth == *self.cur_scope_depth())
-    }
-
-    pub fn locals(&self) -> &Vec<Local> {
-        &self.locals
+    pub fn resolve_local(&self, name: SmolStr) -> Option<usize> {
+        self.locals.iter().position(| s | s.name == name && s.depth == *self.cur_scope_depth())
     }
 
     pub fn cur_scope_depth(&self) -> &usize {
@@ -73,8 +68,3 @@ impl LocalChart {
 
 }
 
-impl Default for LocalChart {
-    fn default() -> Self {
-       Self::new()
-    }
-}

@@ -1,8 +1,7 @@
 use crate::structures::frame::Frame;
-use crate::structures::stack::Stack;
 
 pub struct NumsC {
-    pub stack_frame : Stack<Frame>
+    pub stack_frame : Vec<Frame>
 }
 
 impl NumsC {

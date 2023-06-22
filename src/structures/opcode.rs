@@ -3,22 +3,22 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 #[repr(u8)]
 #[derive(Debug, IntoPrimitive, TryFromPrimitive)]
 pub enum OpCode {
-    Halt        = 0x000000, //End execution 
-    LoadConst   = 0x000001, //load constant
-    Negate      = 0x000002, //negate a number
-    Add         = 0x000003, // add two values
-    Sub         = 0x000004, // subtract two numbers
-    Mul         = 0x000005, // multiply two numbers
-    Div         = 0x000006, // divide two numbers
-    Mod         = 0x000007, // modulus two numbers
-    IfLess      = 0x000008, // IfLessThan
-    IfGreater   = 0x000009, // IfGreaterThan
-    IfEqual     = 0x00000a, // IfEqual
-    Not         = 0x00000b, // IfStringEquals
-    And         = 0x00000c, // IfBoEq
-    Or          = 0x00000d, // Or boolean operator
-    DefLocal    = 0x00000e, // Define a local variable in scope
-    PopN        = 0x00000f, // Pop N off the value stack
-    Pop         = 0x000010, // Pop one off value stack
-    GetLocal    = 0x000011, // One operand, the index of the local variable
+    Halt        , // End execution 
+    LoadConst   , // load constant
+    Negate      , // negate a number
+    Add         , // add two values
+    Sub         , // subtract two numbers
+    Mul         , // multiply two numbers
+    Div         , // divide two numbers
+    Mod         , // modulus two numbers
+    IfLess      , // IfLessThan
+    IfGreater   , // IfGreaterThan
+    IfEqual     , // IfEqual
+    Not         , // IfStringEquals
+    And         , // IfBoEq
+    Or          , // Or boolean operator
+    DefLocal    , // Define a local variable in scope
+    PopN        , // Pop N off the value stack
+    Pop         , // Pop one off value stack
+    GetLocal    , // One operand, the index of the local variable
 }

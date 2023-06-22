@@ -6,7 +6,8 @@ use crate::structures::{value::Value, opcode::OpCode};
 pub fn read_frame() -> Result<Vec<Value>, String> {
     let mut instr_ptr = 0usize;
     let values: Vec<Value> = Vec::new();
-    while let Some(i) = frame.bytecode.get(instr_ptr) {
+    let v = vec![1];
+    while let Some(i) = v.get(instr_ptr) {
         let instruction = OpCode::try_from(*i).unwrap();
         match instruction {
             OpCode::LoadConst => {

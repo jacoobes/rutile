@@ -1,10 +1,10 @@
+use bincode::{Encode, Decode};
 
-use smol_str::SmolStr;
 
-#[derive(Debug)]
+#[derive(PartialEq, Debug, Encode, Decode, Clone )]
 pub enum Value {
-    Str(SmolStr),
     Number(f64),
     Boolean(bool),
     Char(char),
+    ObjRef(i32)
 }

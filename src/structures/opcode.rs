@@ -17,8 +17,6 @@ pub enum OpCode {
     Not         , // IfStringEquals
     And         , // IfBoEq
     Or          , // Or boolean operator
-    DefLocal    , // Define a local variable in scope
-    PopN        , // Pop N off the value stack
-    Pop         , // Pop one off value stack
-    GetLocal    , // One operand, the index of the local variable
+    StoreConst  , // Store constant data, has operand for the data
+
 }

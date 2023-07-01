@@ -4,7 +4,7 @@ pub mod structures;
 pub mod vm;
 
 use clap::Parser;
-use structures::compile_unit::CompileUnit;
+use structures::bytecode_file::BytecodeFile;
 
 
 #[derive(Parser, Debug)]
@@ -17,10 +17,13 @@ struct Args {
 
 
 pub fn main() {
-    let args = Args::parse();
-    let path = args.path;
+    // let args = Args::parse();
+    // let path = args.path;
+    let path = "";
+    let compile_unit = BytecodeFile::new(path.to_string());
+
+    println!("Version {}", &compile_unit.version)
     
-    let compile_unit = CompileUnit::new(path);
     
 
 }

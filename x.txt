@@ -1,12 +1,7 @@
 
-if (s) 
-   @s = fn (a,b,c) -> {}
-else 
-   @v = 10 
+s = fn (a,b,c) -> {}
 
-v = [a,b,c]
-v = true
-v = 20
-s = `sfasdfjkdsflkasdjflkd`
+v = 20 + 10 + 10 / 10
+ss = `sfasdfjkdsflkasdjflkd`
 
 

@@ -17,13 +17,12 @@ struct Args {
 
 
 pub fn main() {
-    // let args = Args::parse();
-    // let path = args.path;
-    let path = "";
-    let compile_unit = BytecodeFile::new(path.to_string());
+    let args = Args::parse();
+    let compile_unit = BytecodeFile::new(args.path.to_string());
 
-    println!("Version {}", &compile_unit.version)
+    println!("Version {}", &compile_unit.version);
+    
+    let result = vm::frame_reader::interpret_unit(compile_unit);
     
     
-
 }

@@ -9,7 +9,6 @@ use super::value::Value;
 //usually the compilation unit has an entry point (main)
 
 pub struct BytecodeFile {
-    file_path: String,
     bytecode: Vec<u8>,
     consts: Vec<Value>,
     pub version: String,
@@ -17,7 +16,7 @@ pub struct BytecodeFile {
 
 impl BytecodeFile {
     pub fn new(file_path: String) -> BytecodeFile {
-        let mut buf_reader = BufReader::new(File::open(&file_path).unwrap());
+        let mut buf_reader = BufReader::new(File::open(&file_path).expect(stringify!("No file found ", file_path)));
         let mut vers = [0; 3];
         buf_reader.read_exact(&mut vers).unwrap();
         let mut bytecode = Vec::new();
@@ -39,7 +38,6 @@ impl BytecodeFile {
         buf_reader.read_to_end(&mut bytecode).unwrap();
         
         BytecodeFile {
-            file_path,
             bytecode,
             consts,
             version: match std::str::from_utf8(&vers) {

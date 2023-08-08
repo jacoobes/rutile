@@ -209,6 +209,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "kongoc"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "clap",
+ "num_enum",
+ "smol_str",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.146"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -245,16 +255,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
-]
-
-[[package]]
-name = "numsc"
-version = "0.1.0"
-dependencies = [
- "bincode",
- "clap",
- "num_enum",
- "smol_str",
 ]
 
 [[package]]

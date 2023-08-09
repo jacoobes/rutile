@@ -1,17 +1,13 @@
 (ns lang.main
   (:require [instaparse.core :as insta :refer [defparser]]
             [clojure.java.io :as io]
-            [lang.writer :refer [version]]
+            [lang.writer :as write :refer [version]]
             [clojure.walk :refer [postwalk]]))
 
 (defn read-file [file-path]
   (slurp file-path))
 
 
-(defn transform [tree] 
-  (insta/transform {
-    :number clojure.edn/read-string
-    } tree))
 
 (defparser parser
     "block           ::= <'{'?> statement* <'}'?>
@@ -49,16 +45,15 @@
 
 (defn walk [tree]   
   (let [scope-level 0]
-    (insta/transform { 
-      } tree)))
+    (insta/transform {} tree)))
 
 (defn -main [& args]
   (let [tree (->> (read-file "./x.txt") 
-                  parser
-                  transform)
+                  parser)
         path "./x.lang"]
   (with-open [writer (io/output-stream path)]
     (do (.write writer version))
-    tree))
-  )
+     (write/const-table writer tree))))
+
+
 

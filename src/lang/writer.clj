@@ -11,10 +11,11 @@
 
 ; const table 
 ; 2 bytes that displays the length of the const table 
-(defn const-table [writer, tree] 
+(defn const-table [writer, tree]
   (insta/transform {
+    ; need to pad data probably
     :string (fn [data] (cons (byte 1) (string-to-byte data)))
-    :bool (fn [b] (byte-array [3 (byte (if (= b "true") 1 0))]) )
+    :bool (fn [b] (seq [(byte 3) (byte (if (= b "true") 1 0) )]))
   } tree))
 
 ; values are represented by 16 bytes.

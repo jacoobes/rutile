@@ -44,12 +44,12 @@
 
 
 (defn walk [tree]   
-  (let [scope-level 0]
-    (insta/transform {} tree)))
+  (let [scope-level (atom 0)]
+    (postwalk #() tree)))
 
 (defn -main [& args]
   (let [tree (->> (read-file "./x.txt") 
-                  parser)
+                   parser)
         path "./x.lang"]
   (with-open [writer (io/output-stream path)]
     (do (.write writer version))

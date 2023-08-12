@@ -1,6 +1,7 @@
 (ns lang.main
   (:require [instaparse.core :as insta :refer [defparser]]
             [clojure.java.io :as io]
+            [lang.struct :as struct]
             [lang.writer :as write :refer [version]]
             [clojure.walk :refer [postwalk]]))
 
@@ -53,7 +54,7 @@
         path "./x.lang"]
   (with-open [writer (io/output-stream path)]
     (do (.write writer version))
-     (write/const-table writer tree))))
+     (struct/const-table tree))))
 
 
 

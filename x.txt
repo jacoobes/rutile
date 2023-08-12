@@ -1,7 +1,3 @@
-
-s = fn (a,b,c) -> {}
-
-v = 20 + 10 + 10 / 10
 ss = `sfasdfjkdsflkasdjflkd`
 
 b = true

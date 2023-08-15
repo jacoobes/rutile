@@ -17,12 +17,12 @@ pub struct LocalChart {
     local_count: usize,
     scope_depth: usize
 }
-
-impl LocalChart {
-
-    fn new() -> Self {
+impl Default for LocalChart {
+    fn default() -> Self {
         Self { locals: Vec::with_capacity(256), local_count : 0, scope_depth: 0 }
     }
+}
+impl LocalChart {
 
     pub fn inc_depth(&mut self) {
         self.scope_depth += 1;

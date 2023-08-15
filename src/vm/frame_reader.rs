@@ -1,16 +1,21 @@
-use crate::structures::{opcode::OpCode, bytecode_file::BytecodeFile, value::Value};
+use crate::structures::{opcode::OpCode, bytecode_file::BytecodeFile, value::Value, locals::LocalChart};
 
 
 //ATM this will just return a vec of values given instructions
 //will be adding more to a real vm later
-pub fn interpret_unit(c: BytecodeFile) -> Result<(), String> {
+pub fn interpret_unit(bc_file: BytecodeFile, local_chart: LocalChart) -> Result<(), String> {
     let mut instr_ptr = 0usize;
     let mut values = Vec::<Value>::new();
-    while let Some(i) = c.get(instr_ptr) {
-        let instruction = OpCode::try_from(*i).unwrap();
+    while let Some(i) = bc_file.get_byte(instr_ptr) {
+        let instruction = OpCode::try_from(i).unwrap();
         match instruction {
+            // pushing constants into the stack. 
             OpCode::LoadConst => {
-
+                instr_ptr += 1;
+                let value = bc_file.get_byte(instr_ptr)
+                    .and_then(|byte| bc_file.get_const(byte as usize))
+                    .expect("LoadConst: Expected index to be at location");
+                values.push(value.clone());
             }
             OpCode::Halt => return Ok(()),
             OpCode::Negate => {
@@ -45,10 +50,7 @@ pub fn interpret_unit(c: BytecodeFile) -> Result<(), String> {
             }
             OpCode::StoreConst => { 
                 instr_ptr += 1;
-                let idx = c.get(instr_ptr).expect("StoreConst: expected index");
-                let data = c.get_const(*idx as usize).unwrap();
-                //for now clone
-                values.push(data.clone())
+
             },
         }
         instr_ptr += 1;

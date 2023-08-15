@@ -5,6 +5,5 @@ use bincode::{Encode, Decode};
 pub enum Value {
     Number(f64),
     Boolean(bool),
-    Char(char),
-    ObjRef(i32)
+    Str(String),
 }

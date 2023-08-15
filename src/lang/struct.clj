@@ -22,25 +22,39 @@
     :bool (fn [b] (hash-map 
                     :data (boolstring-into b true false),
                     :bytes (seq [(byte 3) (byte (boolstring-into b 1 0))]))) 
- })
+})
 
 ; Transform constant nodes into hashmaps using the transform-map
 (def nodes-to-hashmap 
   (partial insta/transform transform-map))
 
+(defn extract-nodes [node]
+  "Flattens constant nodes into a sequence"
+  (cond
+    (map? node)
+    (if (:data node)
+      [node]
+      (apply concat (map extract-nodes (:content node))))
+    
+    (coll? node)
+    (apply concat (map extract-nodes node))
+    :else []))  
 
 ; extracting constant nodes into a data structure that looks something 
 ; {
-;  "sfasdfjkdsflkasdjflkd" { :bytes (1 2) } 
-;   true  { :bytes (3, 1) }
-;   false { :bytes (3, 0) }
+;  "sfasdfjkdsflkasdjflkd" { :bytes (1 2) ... } 
+;   true  { :bytes (3, 1)  ... }
+;   false { :bytes (3, 0) ... }
 ; }
 
-(defn target-fn [tree]  
-  (tree-seq map? (fn [node] 
-                   (if (contains? node :data) (seq [node]) (seq[]))) tree))
+(defn assoc-consts [li]
+  (->> li 
+    (map #( vector (% :data) % ))
+    (into {})))
 
 (defn const-table [tree]
   ( -> tree 
-       nodes-to-hashmap))
+       nodes-to-hashmap
+       extract-nodes
+       assoc-consts))
 ; const table- turn tree into map of data 

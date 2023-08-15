@@ -4,10 +4,6 @@
     [lang.utils :refer [if-let*]]
     [clojure.walk :as walk]))
 
-;(defn evaluate [node]
-;  (if-let* [const (= (:tag node) :bool)]
-;    (:content node)
-;    node))
 
 (defn boolstring-into [s tr fa] 
   (if (= s "true") tr fa))
@@ -15,17 +11,24 @@
 (defn string-to-byte [string] 
   (map (comp byte int) string))
 
+(def string-discrim 
+ (byte-array [ (byte 2) (byte 0) (byte 0) (byte 0)]))
+(def bool-discrim 
+ (byte-array [ (byte 1) (byte 0) (byte 0) (byte 0)]))
+
+; bytes will represent the bincode format
 (def transform-map {
     :string (fn [data] (hash-map 
                          :data data,
-                         :bytes (cons (byte 1) (string-to-byte data))))
+                         :bytes (into string-discrim (string-to-byte data))))
     :bool (fn [b] (hash-map 
                     :data (boolstring-into b true false),
-                    :bytes (seq [(byte 3) (byte (boolstring-into b 1 0))]))) 
-})
+                    :bytes (into bool-discrim [ (byte (boolstring-into b 1 0)) ]))) 
+  })
+
 
 ; Transform constant nodes into hashmaps using the transform-map
-(def nodes-to-hashmap 
+(def transform-consts
   (partial insta/transform transform-map))
 
 (defn extract-nodes [node]
@@ -49,12 +52,15 @@
 
 (defn assoc-consts [li]
   (->> li 
-    (map #( vector (% :data) % ))
+    (map #(vector (% :data) %))
     (into {})))
 
 (defn const-table [tree]
   ( -> tree 
-       nodes-to-hashmap
+       transform-consts
        extract-nodes
        assoc-consts))
 ; const table- turn tree into map of data 
+
+
+

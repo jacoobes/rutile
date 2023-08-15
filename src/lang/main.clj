@@ -9,7 +9,6 @@
   (slurp file-path))
 
 
-
 (defparser parser
     "block           ::= <'{'?> statement* <'}'?>
 
@@ -44,17 +43,26 @@
      :total true)
 
 
-(defn walk [tree]   
+(defn walk [tree 
+            on-new-scope 
+            on-leave-scope]   
+
   (let [scope-level (atom 0)]
-    (postwalk #() tree)))
+    (postwalk (fn [node] 
+                
+                
+                ) tree)))
 
 (defn -main [& args]
   (let [tree (->> (read-file "./x.txt") 
                    parser)
         path "./x.lang"]
   (with-open [writer (io/output-stream path)]
-    (do (.write writer version))
-     (struct/const-table tree))))
+    (let [const-table (struct/const-table tree)] 
+      (write/version writer)
+      (write/const-table writer const-table)))))
 
+;    (do (.write writer version))
+;     (struct/const-table tree))
 
 

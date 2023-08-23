@@ -23,7 +23,7 @@ pub fn main() {
     let compile_unit = BytecodeFile::new(args.path.to_string());
     println!("Version {}", &compile_unit.version);
     let locals = LocalChart::default(); 
-    let result = vm::frame_reader::interpret_unit(compile_unit, locals);
+    //let result = vm::frame_reader::interpret_unit(compile_unit, locals);
     
     
 }

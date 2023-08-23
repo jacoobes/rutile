@@ -2,28 +2,27 @@
   (:require 
     [instaparse.core :as insta :refer [defparser]]
     [lang.utils :refer [if-let*]]
+    [lang.bytes :as bytes]
     [clojure.walk :as walk]))
 
-
-(defn boolstring-into [s tr fa] 
-  (if (= s "true") tr fa))
 
 (defn string-to-byte [string] 
   (map (comp byte int) string))
 
-(def string-discrim 
- (byte-array [ (byte 2) (byte 0) (byte 0) (byte 0)]))
-(def bool-discrim 
- (byte-array [ (byte 1) (byte 0) (byte 0) (byte 0)]))
+(defn pad [n coll val]
+  (take n (concat coll (repeat val))))
+
 
 ; bytes will represent the bincode format
 (def transform-map {
-    :string (fn [data] (hash-map 
-                         :data data,
-                         :bytes (into string-discrim (string-to-byte data))))
+    :string (fn [data] 
+      (let [trimmed-str (subs data 1 (- (count data) 1))] 
+        (hash-map 
+          :data trimmed-str,
+          :bytes (bytes/string trimmed-str))))
     :bool (fn [b] (hash-map 
-                    :data (boolstring-into b true false),
-                    :bytes (into bool-discrim [ (byte (boolstring-into b 1 0)) ]))) 
+                    :data (read-string b),
+                    :bytes (bytes/bool b))) 
   })
 
 

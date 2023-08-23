@@ -3,7 +3,7 @@
             [clojure.java.io :as io]
             [lang.struct :as struct]
             [lang.writer :as write :refer [version]]
-            [clojure.walk :refer [postwalk]]))
+            [clojure.walk :refer [postwalk]]) (:gen-class))
 
 (defn read-file [file-path]
   (slurp file-path))
@@ -46,7 +46,6 @@
 (defn walk [tree 
             on-new-scope 
             on-leave-scope]   
-
   (let [scope-level (atom 0)]
     (postwalk (fn [node] 
                 
@@ -60,9 +59,6 @@
   (with-open [writer (io/output-stream path)]
     (let [const-table (struct/const-table tree)] 
       (write/version writer)
-      (write/const-table writer const-table)))))
-
-;    (do (.write writer version))
-;     (struct/const-table tree))
-
+      (write/const-table writer const-table)
+      const-table))))
 

@@ -1,12 +1,15 @@
-bazel-bin
-bazel-multi-language-bazel-monorepo
-bazel-out
-bazel-testlogs
-
-__pycache__
-
-.idea
-
-node_modules
-
-.ijwb
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/lib/
+/classes/
+/target/
+/checkouts/
+.lein-deps-sum
+.lein-repl-history
+.lein-plugins/
+.lein-failures
+.nrepl-port
+.cpcache/
+>>>>>>> frontend/master

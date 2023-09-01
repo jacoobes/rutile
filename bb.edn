@@ -1,0 +1,21 @@
+{
+ :min-bb-version "0.4.0"
+ :tasks {
+    compile:clj { :doc "compiles frontend"
+                  :task (shell {:dir "projects/lang"} "lein uberjar")}
+
+    compile:rust { :doc "compile the virtual machine" 
+                   :task (shell {:dir "projects/kongoc"} "cargo build") 
+                   :enter (println (str (:name  current-task)))}
+
+    compile:dev { :doc "compiles everything"
+                  :requires ([babashka.fs :as fs])
+                  :task (do (run 'compile:clj)
+                            (run 'compile:rust)
+                            (fs/delete-if-exists "out/")
+                            (fs/create-dir "out")
+                            (fs/copy "projects/lang/target/lang-HEAD-standalone.jar" "out/dev.jar")
+                            (fs/copy "projects/kongoc/target/debug/kongoc.exe" "out/kongoc.exe"))} 
+  }
+}
+

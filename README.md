@@ -1,2 +1,3 @@
 # rutile
-another programming language
+another programming language (im gonna finish this one this time)
+

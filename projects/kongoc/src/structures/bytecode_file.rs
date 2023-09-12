@@ -79,9 +79,9 @@ impl BytecodeFile {
             };
             
             let value = bincode::decode_from_slice::<Value, _>(&chunk, bincode_config);
-            let s = value.unwrap();
+            let value = value.unwrap().0;
 
-            consts.push(s.0);
+            consts.push(value);
         }
 
         buf_reader

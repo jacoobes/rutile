@@ -13,11 +13,6 @@ pub struct BytecodeFile {
     pub version: String,
 }
 
-enum BytecodeSeq {
-    String(u64),
-    Boolean(u8)
-}
-
 impl BytecodeFile {
     pub fn new(file_path: String) -> BytecodeFile {
 
@@ -27,11 +22,9 @@ impl BytecodeFile {
             .expect(stringify!("No file found ", file_path));
 
         let mut vers = [0; 3];
-
         buf_reader
             .read_exact(&mut vers)
             .unwrap();
-
         let mut bytecode = Vec::new();
 
         let mut len = [0;1];
@@ -42,52 +35,49 @@ impl BytecodeFile {
         let mut consts = Vec::new();    
         for _ in 0..*len.first().unwrap() {
             let mut chunk: Vec<u8> = vec![];
+            //This is where the bincode discriminator. It will be 4 bytes 
             let mut discrim = [0u8; 4]; 
-            
+            //We read it here^
             buf_reader
                 .read_exact(&mut discrim)
                 .expect("Segfault: misaligned chunk of const data");
-
+            //We add the discrim to the slice
             chunk.extend_from_slice(&discrim);
-            let byte_seq = match u32::from_le_bytes(discrim) {
+            match u32::from_le_bytes(discrim) {
+                0 => {
+                    let mut num = [0u8; 8];
+                    buf_reader.read_exact(&mut num).expect("Segfault: could not find number value after discrim");
+                    chunk.extend_from_slice(&num);
+                    &chunk
+                }
+                1 => { 
+                    let mut bool = [0u8; 1];
+                    buf_reader.read_exact(&mut bool).expect("Segfault: could not find boolean value after discrim");
+                    chunk.push(*bool.first().unwrap());
+                    &chunk
+                }
                 2 => {
                   let mut len = [0u8; 8];
                   buf_reader.read_exact(&mut len).expect("Segfault: missing chunk of data for string length");
                   chunk.extend_from_slice(&len);
-                  BytecodeSeq::String(u64::from_le_bytes(len))
-                },
-                1 => { 
-                    let mut bool = [0u8; 1];
-                    buf_reader.read_exact(&mut bool).expect("Segfault: could not find boolean value after discrim");
-                    BytecodeSeq::Boolean(*bool.first().unwrap())
-                }
-                _ => BytecodeSeq::Boolean(0)
-            };
-            let chunk = match byte_seq {
-                BytecodeSeq::String(len) => {
-                    let mut str_data = vec![0; len as usize]; 
-                    buf_reader
+                  let mut str_data = vec![0; u64::from_le_bytes(len) as usize]; 
+                  buf_reader
                         .read_exact(&mut str_data)
                         .expect("segfault: str data after length");
                     chunk.append(&mut str_data);
                     &chunk
-               }, 
-               BytecodeSeq::Boolean(x) => {
-                    chunk.push(x); 
-                    &chunk
-               }
+                },
+                _ => &chunk
             };
-            
             let value = bincode::decode_from_slice::<Value, _>(&chunk, bincode_config);
             let value = value.unwrap().0;
-
             consts.push(value);
         }
 
         buf_reader
             .read_to_end(&mut bytecode)
             .unwrap();
-        
+        consts.iter().for_each(|v| println!("{:?}", v) );
         BytecodeFile {
             bytecode,
             consts,

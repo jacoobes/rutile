@@ -14,6 +14,7 @@
 
 
 ; bytes will represent the bincode format
+; we transform nodes into hashmaps with data.
 (def transform-map {
     :string (fn [data] 
       (let [trimmed-str (subs data 1 (- (count data) 1))] 
@@ -22,7 +23,12 @@
           :bytes (bytes/string trimmed-str))))
     :bool (fn [b] (hash-map 
                     :data (read-string b),
-                    :bytes (bytes/bool b))) 
+                    :bytes (bytes/bool b)))
+    :number (fn [n] 
+      (let [parsed-num (Double/parseDouble n)]
+        (hash-map 
+          :data  parsed-num
+          :bytes (bytes/number parsed-num)))) 
   })
 
 

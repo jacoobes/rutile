@@ -24,6 +24,4 @@ pub fn main() {
     println!("Version {}", &compile_unit.version);
     let locals = LocalChart::default(); 
     //let result = vm::frame_reader::interpret_unit(compile_unit, locals);
-    
-    
 }

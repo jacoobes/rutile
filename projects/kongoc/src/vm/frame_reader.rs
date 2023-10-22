@@ -27,6 +27,7 @@ pub fn interpret_unit(bc_file: BytecodeFile, local_chart: LocalChart) -> Result<
                 }
             },
             OpCode::Not => {
+
             }
             OpCode::Add =>  {
             }
@@ -58,3 +59,12 @@ pub fn interpret_unit(bc_file: BytecodeFile, local_chart: LocalChart) -> Result<
     Err("Program did not halt correctly".to_string())
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_add() {
+        assert_eq!(5, 5);
+    }
+}

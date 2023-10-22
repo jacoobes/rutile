@@ -101,3 +101,12 @@ impl BytecodeFile {
 
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_add() {
+        assert_eq!(5, 5);
+    }
+}

@@ -13,6 +13,63 @@ pub struct BytecodeFile {
     pub version: String,
 }
 
+//impl From<Vec<u8>> for BytecodeFile {
+//
+//    fn from(values: Vec<u8>) -> Self {
+//        let version  = &values[0..3];
+//        let len = values.get(4).expect("Expected an byte in sequence");
+//        
+//        let mut consts = Vec::with_capacity(*len as usize);
+//        
+//        for _ in 0..*len {
+//            let mut chunk: Vec<u8> = vec![];
+//            //This is where the bincode discriminator. It will be 4 bytes 
+//            let mut discrim = [0u8; 4]; 
+//            //We read it here^
+//            buf_reader
+//                .read_exact(&mut discrim)
+//                .expect("Segfault: misaligned chunk of const data");
+//            //We add the discrim to the slice
+//            chunk.extend_from_slice(&discrim);
+//            match u32::from_le_bytes(discrim) {
+//                0 => {
+//                    let mut num = [0u8; 8];
+//                    buf_reader.read_exact(&mut num).expect("Segfault: could not find number value after discrim");
+//                    chunk.extend_from_slice(&num);
+//                    &chunk
+//                }
+//                1 => { 
+//                    let mut bool = [0u8; 1];
+//                    buf_reader.read_exact(&mut bool).expect("Segfault: could not find boolean value after discrim");
+//                    chunk.push(*bool.first().unwrap());
+//                    &chunk
+//                }
+//                2 => {
+//                  let mut len = [0u8; 8];
+//                  buf_reader.read_exact(&mut len).expect("Segfault: missing chunk of data for string length");
+//                  chunk.extend_from_slice(&len);
+//                  let mut str_data = vec![0; u64::from_le_bytes(len) as usize]; 
+//                  buf_reader
+//                        .read_exact(&mut str_data)
+//                        .expect("segfault: str data after length");
+//                    chunk.append(&mut str_data);
+//                    &chunk
+//                },
+//                _ => &chunk
+//            };
+//        }
+//        return BytecodeFile {
+//            bytecode: vec![],
+//            consts: vec![],
+//            version: match std::str::from_utf8(version) {
+//                Ok(v) => String::from(v),
+//                Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+//            }
+//        };
+//    }
+//}
+//
+
 impl BytecodeFile {
     pub fn new(file_path: String) -> BytecodeFile {
 

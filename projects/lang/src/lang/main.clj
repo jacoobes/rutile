@@ -43,14 +43,12 @@
      :total true)
 
 
-(defn walk [tree 
-            on-new-scope 
-            on-leave-scope]   
+(defn walk [tree]   
   (let [scope-level (atom 0)]
     (postwalk (fn [node] 
                 
                 
-                ) tree)))
+      ) tree)))
 
 (defn -main [& args]
   (let [tree (->> (read-file "./x.txt") 

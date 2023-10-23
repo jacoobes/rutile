@@ -27,9 +27,17 @@ pub fn interpret_unit(bc_file: BytecodeFile, local_chart: LocalChart) -> Result<
                 }
             },
             OpCode::Not => {
-
+                let last = values.pop();
+                if let Some(Value::Boolean(x)) = last {
+                    values.push(Value::Boolean(!x))    
+                } else {
+                    panic!("Tried to negate non number")
+                }
             }
             OpCode::Add =>  {
+                let o1 = values.pop().expect("Expected el");
+                let o2 = values.pop().expect("Expected el");
+                values.push(o1 + o2);
             }
             OpCode::Sub => {
             },

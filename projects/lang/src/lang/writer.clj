@@ -16,11 +16,14 @@
     (do 
       (.write writer (int hmap-size))
       (doseq [[_ v] hmap] 
-        (.write writer (byte-array (:bytes v)) ))  
-      )))
+        (.write writer (byte-array (:bytes v)) )))))
 
-; values are represented by 16 bytes.
-; each value has disciminator and associated value.
-(defn value [writer node] node)
+(defn bytecode [writer 
+                tree
+                const-hmap] 
+  
+  
+)
+
 
 

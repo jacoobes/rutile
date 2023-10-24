@@ -1,8 +1,6 @@
-use smol_str::SmolStr;
-
 #[derive(Debug)]
 pub struct Local {
-    name: SmolStr,
+    name: String,
     depth: usize
 }
 impl Local {
@@ -36,7 +34,7 @@ impl LocalChart {
         prev_len - now_len
     }
 
-    pub fn new_local(&mut self, name: SmolStr) {
+    pub fn new_local(&mut self, name: String) {
        if self.local_count == 256 {
             panic!("Variable overflow. Reached maximum variables per scope (256)")
        }
@@ -54,7 +52,7 @@ impl LocalChart {
         //self.locals.iter().any( |t | t == new_local)
     }
 
-    pub fn resolve_local(&self, name: SmolStr) -> Option<usize> {
+    pub fn resolve_local(&self, name: String) -> Option<usize> {
         self.locals.iter().position(| s | s.name == name && s.depth == *self.cur_scope_depth())
     }
 

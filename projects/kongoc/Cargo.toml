@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-smol_str = "0.1.21"
-num_enum = "0.5.7"
+num_enum = "0.7.0"
 clap = { version = "4.3.5", features = ["derive"] }
 bincode = "2.0.0-rc"

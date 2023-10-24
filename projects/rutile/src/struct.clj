@@ -1,8 +1,8 @@
-(ns lang.struct
+(ns lang.src.struct
   (:require 
     [instaparse.core :as insta :refer [defparser]]
-    [lang.utils :refer [if-let*]]
-    [lang.bytes :as bytes]
+    [lang.src.utils :refer [if-let*]]
+    [lang.src.bytes :as bytes]
     [clojure.walk :as walk]))
 
 

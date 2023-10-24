@@ -1,6 +1,6 @@
-(ns lang.writer
+(ns lang.src.writer
   (:require [instaparse.core :as insta :refer [defparser]]
-            [lang.bytes :refer [string->bytes]]))
+            [lang.src.bytes :refer [string->bytes]]))
 
 ; version 2.0
 (def current-version (byte-array [(byte 127)

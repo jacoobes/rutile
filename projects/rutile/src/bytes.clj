@@ -1,4 +1,4 @@
-(ns lang.bytes)
+(ns lang.src.bytes)
 (import '[java.nio ByteBuffer])
 
 (def NULL (byte 0))

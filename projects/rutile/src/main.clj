@@ -1,8 +1,8 @@
-(ns lang.main
+(ns lang.src.main
   (:require [instaparse.core :as insta :refer [defparser]]
             [clojure.java.io :as io]
-            [lang.struct :as struct]
-            [lang.writer :as write :refer [version]]
+            [lang.src.struct :as struct]
+            [lang.src.writer :as write :refer [version]]
             [clojure.walk :refer [postwalk]]) (:gen-class))
 
 (defn read-file [file-path]

@@ -1,4 +1,4 @@
-(ns lang.utils)
+(ns lang.src.utils)
 ;; if-let multiple bindings version
 (defmacro if-let*
   ([bindings-vec then] `(if-let* ~bindings-vec ~then nil))

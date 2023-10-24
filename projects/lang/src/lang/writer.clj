@@ -18,6 +18,8 @@
       (doseq [[_ v] hmap] 
         (.write writer (byte-array (:bytes v)) )))))
 
+
+
 (defn bytecode [writer 
                 tree
                 const-hmap] 

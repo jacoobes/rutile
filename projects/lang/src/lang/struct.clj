@@ -28,7 +28,11 @@
       (let [parsed-num (Double/parseDouble n)]
         (hash-map 
           :data  parsed-num
-          :bytes (bytes/number parsed-num)))) 
+          :bytes (bytes/number parsed-num))))
+    :function (fn [n] 
+      (hash-map 
+          :data 1
+          :bytes (seq [0]))) 
   })
 
 

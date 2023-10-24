@@ -13,6 +13,7 @@
     "block           ::= <'{'?> statement* <'}'?>
 
      <statement>     ::= assignment | conditional | loop | block | def
+     defn            ::= defn identifier <'('> identifier {<','> identifier} <','?> <')'> statement
      def             ::= varexpr
      assignment      ::= <'@'> varexpr
      <varexpr>       ::= identifier <'='> expr
@@ -26,11 +27,10 @@
      <mul-div>       ::= primary | mul | div 
      mul             ::= mul-div <'*'> primary
      div             ::= mul-div <'/'> primary
-     <primary>       ::= token | number | function | array | string | <'('> expr <')'>
+     <primary>       ::= token | number | array | string | <'('> expr <')'>
 
      <token>         ::= bool | !bool identifier
      array           ::= <'['> expr { <','> expr } <','?> <']'>
-     function        ::= <'fn'> <'('> identifier {<','> identifier} <','?> <')'> <'->'> statement 
      identifier      ::= #'[a-zA-Z0-9]+'
      number          ::= #'[0-9]+'
      (* Crazy regex for strings. Clojure does not allow raw string regexes which lead to this*)

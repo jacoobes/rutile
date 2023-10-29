@@ -2,9 +2,12 @@
   (:require [instaparse.core :as insta :refer [defparser]]
             [rutile.bytes :refer [string->bytes]]))
 
-; version 2.0
+; header of bytecode = (byte 127) KGC 
+; writes version of kongoc compiler
 (def current-version (byte-array [(byte 127)
-                                  (byte 82)
+                                  (byte 75)
+                                  (byte 71)
+                                  (byte 67)
                                   (byte 50)]))
 (defn version [writer] 
   (do (.write writer current-version)))

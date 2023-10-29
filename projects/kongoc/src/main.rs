@@ -3,10 +3,10 @@ extern crate core;
 pub mod structures;
 pub mod vm;
 
+use std::fs::File;
+
 use clap::Parser;
 use structures::bytecode_file::BytecodeFile;
-
-use crate::structures::locals::LocalChart;
 
 
 #[derive(Parser, Debug)]
@@ -20,8 +20,9 @@ struct Args {
 
 pub fn main() {
     let args = Args::parse();
-    let compile_unit = BytecodeFile::new(args.path.to_string());
+    let f = File::open(args.path.to_string())
+                .expect("Unable to open file");
+    let compile_unit = BytecodeFile::new(f);
     println!("Version {}", &compile_unit.version);
-    let locals = LocalChart::default(); 
     //let result = vm::frame_reader::interpret_unit(compile_unit, locals);
 }

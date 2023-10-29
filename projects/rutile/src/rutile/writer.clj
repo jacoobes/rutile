@@ -26,8 +26,7 @@
 (defn bytecode [writer 
                 tree
                 const-hmap] 
-  
-  
+    tree
 )
 
 

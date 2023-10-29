@@ -3,7 +3,10 @@
             [clojure.java.io :as io]
             [rutile.struct :as struct]
             [rutile.writer :as write :refer [version]]
+            [clojure.zip :as zip]
             [clojure.walk :refer [postwalk]]) (:gen-class))
+
+(set! *warn-on-reflection* true)
 
 (defn read-file [file-path]
   (slurp file-path))
@@ -38,25 +41,27 @@
      bool            ::= 'true' | 'false'
      " 
      :input-format :ebnf 
-     :output-format :enlive 
+     :output-format :hiccup
      :auto-whitespace :standard 
      :total true)
 
-
-(defn walk [tree]   
-  (let [scope-level (atom 0)]
-    (postwalk (fn [node] 
-                
-                
-      ) tree)))
+(defn zip-map [f loc]
+  " Map f over every node of the zipper.
+    The function received has the form (f node-value loc),
+    the node value and its location"
+  (loop [z loc]
+    (if (zip/end? z)
+      (zip/root z) 
+      (recur (zip/next (zip/edit z f z))))))
 
 (defn -main [& args]
   (let [tree (->> (read-file "./x.txt") 
                    parser)
         path "./x.lang"]
   (with-open [writer (io/output-stream path)]
-    (let [const-table (struct/const-table tree)] 
+    (let [const-table (struct/const-table tree)
+          loc (zip/vector-zip tree)] 
       (write/version writer)
       (write/const-table writer const-table)
-      const-table))))
+      (write/bytecode writer tree const-table)))))
 

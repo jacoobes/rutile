@@ -16,11 +16,9 @@
 ; 2 bytes that displays the length of the const table 
 (defn const-table [writer hmap]
   (let [hmap-size (count hmap)] 
-    (do 
-      (.write writer (int hmap-size))
-      (doseq [[_ v] hmap] 
+    (do (.write writer (int hmap-size))
+        (doseq [[_ v] hmap] 
         (.write writer (byte-array (:bytes v)) )))))
-
 
 
 (defn bytecode [writer 

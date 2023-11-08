@@ -13,10 +13,10 @@
 
 
 (defparser parser
-    "block           ::= <'{'?> statement* <'}'?>
-
-     <statement>     ::= assignment | conditional | loop | block | def
-     defn            ::= defn identifier <'('> identifier {<','> identifier} <','?> <')'> statement
+    "program         ::= statement* 
+     <statement>     ::= defn | assignment | conditional | loop | def | block
+     block           ::= &'{' statement* <'}'>
+     defn            ::= <'defn'> identifier <'('> identifier? {<','> identifier} <','?> <')'> statement
      def             ::= varexpr
      assignment      ::= <'@'> varexpr
      <varexpr>       ::= identifier <'='> expr
@@ -36,7 +36,7 @@
      array           ::= <'['> expr { <','> expr } <','?> <']'>
      identifier      ::= #'[a-zA-Z0-9]+'
      number          ::= #'[0-9]+'
-     (* Crazy regex for strings. Clojure does not allow raw string regexes which lead to this*)
+     (* Crazy regex for strings. Clojure does not allow raw string regexes which lead to this *)
      string          ::= #'`([^\\\"\\\\]|\\\\.)*`'
      bool            ::= 'true' | 'false'
      " 

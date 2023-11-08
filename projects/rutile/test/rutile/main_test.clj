@@ -3,5 +3,5 @@
             [rutile.main :refer :all]))
 
 (deftest a-test
-  (testing "FIXME, I fail."
+  (testing "Parse"
     (is (= 0 1))))
